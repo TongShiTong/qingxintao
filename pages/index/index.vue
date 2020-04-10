@@ -1,0 +1,582 @@
+<template>
+	<view class="page">
+		<view class="box01">
+			<view class="topBox">
+				<view class="searchBox">
+					<view class="searchLeft">
+						<text class="iconfont iconsousuo"></text>
+						<input disabled="true" @click="search" placeholder="搜索商品标题 领优惠券拿返现" placeholder-class="defaultInput" class="searchInput" />
+					</view>
+
+					<text class="iconfont iconxiangji scanEnter"></text>
+				</view>
+
+				<navigator class="newsEnter" url="/pages/user/inform/inform"><text class="iconfont iconxiaoxi1"></text></navigator>
+			</view>
+
+			<view class="adBox">
+				<view class="adTxts">
+					<view class="adTxtItem">1.复制商品链接</view>
+					<view class="adTxtItem">2.领优惠券</view>
+					<view class="adTxtItem">3.下单拿返利/分享赚钱</view>
+				</view>
+				<image src="../../static/images/adImg.png" mode="aspectFill" class="adImg"></image>
+			</view>
+
+			<view class="swiperBox">
+				<uni-swiper-dot :info="banners" :current="current" mode="round" :dots-styles="dotStyle" field="content">
+					<swiper class="swiper-box" @change="change">
+						<swiper-item v-for="(item, index) in banners" :key="index">
+							<view :class="item.colorClass" class="swiper-item"><image class="swiperImage" :src="item.imageurl" mode="aspectFill" /></view>
+						</swiper-item>
+					</swiper>
+				</uni-swiper-dot>
+			</view>
+		</view>
+
+		<view class="box02">
+			<view class="nineBox">
+				<uni-grid :column="5" :square="false" :show-border="false" :highlight="false" @change="gridChange">
+					<uni-grid-item v-for="(item, index) in nines" :index="index" :key="index">
+						<navigator class="grid-item-box" :url="item.linkurl">
+							<image :src="item.imageurl" class="kindImage" mode="aspectFill" />
+							<text class="kindText">{{ item.title }}</text>
+						</navigator>
+					</uni-grid-item>
+				</uni-grid>
+			</view>
+
+			<view class="conBox">
+				<view class="ad3ImgBox">
+					<navigator class="adImg01" :url="rubikCube.left.linkurl">
+					<image :src="rubikCube.left.imageurl" mode="aspectFill" class="adImg01"></image></navigator>
+					<view class="adImgBox">
+						<navigator class="adImg02" :url="rubikCube.left.linkurl">
+						<image :src="rubikCube.rightTop.imageurl" mode="aspectFill" class="adImg02"></image></navigator>
+						<navigator class="adImg02" :url="rubikCube.left.linkurl">
+						<image :src="rubikCube.rightBottom.imageurl" mode="aspectFill" class="adImg02"></image></navigator>
+					</view>
+				</view>
+
+				<view class="ad4ImgBox">
+					<view v-for="(item, index) in recAds" :index="index" :key="index">
+						<navigator class="adImg03" :url="item.linkurl">
+							<image :src="item.imageurl" class="adImg03" mode="aspectFill" />
+						</navigator>
+					</view>
+				</view>
+
+				<view class="adSwiperBox">
+					<uni-swiper-dot :info="adBanners" :current="adCurrent" mode="round" :dots-styles="dotStyle" field="content">
+						<swiper class="swiper-box" @change="adChange">
+							<swiper-item v-for="(item, index) in adBanners" :key="index">
+								<view :class="item.colorClass" class="swiper-item"><image class="swiperImage" :src="item.imageurl" mode="aspectFill" /></view>
+							</swiper-item>
+						</swiper>
+					</uni-swiper-dot>
+				</view>
+
+				<goodKindNavs :goodKind="goodKind" :curKind="curKind" @checkKindParent="checkKindParent"></goodKindNavs>
+
+				<view class="goodList">
+					<navigator class="goodItem" v-for="(item, index) in goodList" :key="index" :url="'/pages/index/proDetails?itemid='+item.item_id" >
+					<!-- <navigator class="goodItem" v-for="(item, index) in goodList" :key="index"  @tap="openTaoBaoItem"> -->
+						<image :src="item.pict_url" class="goodImg" mode="aspectFill"></image>
+						<view class="goodRight">
+							<view class="goodName">
+								<image src="../../static/images/hotIcon.png" class="hotImg" mode="aspectFill"></image>
+								{{ item.title }}
+							</view>
+
+							<view class="goodInfoMid">
+								<view class="shopInfo">
+									<image :src="item.shop_logo" class="shopLogo" mode="aspectFill"></image>
+									{{ item.shop_title }}
+								</view>
+								<view class="sales">{{ item.user_type==1?"淘宝":"天猫" }}</view>
+							</view>
+
+							<view class="couponBox">
+								<view class="couponLeft">
+									券后￥
+									<text>{{ item.zk_final_price-item.coupon_amount }}</text>
+								</view>
+								<view v-if="item.coupon_amount>0" class="couponRight">
+									<text>券</text>
+									￥{{ item.coupon_amount }}
+								</view>
+							</view>
+
+							<view class="winBox">
+								<view class="winItem winLeft">预估赚￥{{ item.commission_price }}</view>
+								<view class="winItem winRight">
+									<text class="iconfont icondiamonds"></text>
+									升级赚￥{{ item.commission_price_super }}
+								</view>
+							</view>
+						</view>
+					</navigator>
+				</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+import uniSwiperDot from '@/components/uni-swiper-dot/uni-swiper-dot.vue';
+import uniGrid from '@/components/uni-grid/uni-grid.vue';
+import uniGridItem from '@/components/uni-grid-item/uni-grid-item.vue';
+import goodKindNavs from '@/components/good-kind-navs/good-kind-navs.vue';
+var banners = [];
+var adBanners = [];
+var nines = [];
+var rubikCube={
+	left:{},
+	rightTop:{},
+	rightBottom:{},
+};
+var recAds=[];
+var goodKind = ['精选'];
+var cateList=[{
+	id:0,
+	name:'精选',
+}];
+var goodList = [
+	{
+		img: '/static/images/goodImg.png',
+		name: '高梵2019新款时尚工装羽绒服女中长款韩版连帽蓄热保暖',
+		shop: '高梵旗舰店',
+		shopLogo: '/static/images/shopLogo.png',
+		sales: '25000',
+		money: '649',
+		coupon: '150',
+		yg_win: '18.8',
+		sj_win: '28.8'
+	},
+	{
+		img: '/static/images/goodImg.png',
+		name: '高梵2019新款时尚工装羽绒服女中长款韩版连帽蓄热保暖',
+		shop: '高梵旗舰店',
+		shopLogo: '/static/images/shopLogo.png',
+		sales: '25000',
+		money: '649',
+		coupon: '150',
+		yg_win: '18.8',
+		sj_win: '28.8'
+	},
+	{
+		img: '/static/images/goodImg.png',
+		name: '高梵2019新款时尚工装羽绒服女中长款韩版连帽蓄热保暖',
+		shop: '高梵旗舰店',
+		shopLogo: '/static/images/shopLogo.png',
+		sales: '25000',
+		money: '649',
+		coupon: '150',
+		yg_win: '18.8',
+		sj_win: '28.8'
+	}
+];
+export default {
+	components: {
+		uniSwiperDot,
+		uniGrid,
+		uniGridItem,
+		goodKindNavs
+	},
+	data() {
+		return {
+			banners: banners, //顶部轮播图
+			dotStyle: {
+				//轮播图知识点的颜色
+				backgroundColor: 'rgb(201, 199, 200)',
+				selectedBackgroundColor: 'rgba(0, 0, 0,.8)',
+				border: 'none',
+				selectedBorder: 'none'
+			},
+			current: 0, //当前轮播图的下标
+			adCurrent: 0, //当前广告轮播图的下标
+			nines: nines, //九宫格部分
+			adBanners: adBanners, //广告位的轮播图
+			goodKind: goodKind, //产品分类
+			cateList:cateList,
+			curKind: 0, //当前产品分类的下标
+			goodList: goodList ,//产品列表
+			rubikCube:rubikCube,
+			recAds:recAds,
+		};
+	},
+	onLoad() {
+		var _this = this;
+		this.demoFun();
+
+		//获取并设置轮播图
+		_this.$GET_FUN('/api/adszone/getAdsByMark', { mark: 'app_index_banner' }, res => {
+			if (res.data.code == 1) {
+				let resData = [];
+				res.data.data.data.forEach(item => {
+					item.imageurl = _this.$PIC(item.imageurl);
+					resData.push(item);
+				});
+				_this.banners = resData;
+			}
+		});
+		
+		//获取并设置页面中间轮播广告
+		_this.$GET_FUN('/api/adszone/getAdsByMark', { mark: 'app_index_slide_ads_01' }, res => {
+			if (res.data.code == 1) {
+				let resData = [];
+				res.data.data.data.forEach(item => {
+					item.imageurl = _this.$PIC(item.imageurl);
+					resData.push(item);
+				});
+				_this.adBanners = resData;
+			}
+		});
+		
+		//获取并设置分类菜单导航
+		_this.$GET_FUN('/api/adszone/getAdsByMark', { mark: 'app_index_menu' }, res => {
+			if (res.data.code == 1) {
+				let resData = [];
+				res.data.data.data.forEach(item => {
+					item.imageurl = _this.$PIC(item.imageurl);
+					resData.push(item);
+				});
+				_this.nines = resData;
+			}
+		});
+		//获取并设置APP首页_导航图标下方_魔方栏
+		_this.$GET_FUN('/api/adszone/getAdsByMark', { mark: 'app_index_rubikcube' }, res => {
+			if (res.data.code == 1) {
+				let resData = [];
+				res.data.data.data.forEach(item => {
+					item.imageurl = _this.$PIC(item.imageurl);
+					resData.push(item);
+				});
+				//console.log(resData);
+				_this.rubikCube.left = resData[0];
+				_this.rubikCube.rightTop = resData[1];
+				_this.rubikCube.rightBottom = resData[2];
+			}
+		});
+		//获取并设置APP首页_魔方栏下方_活动分类
+		_this.$GET_FUN('/api/adszone/getAdsByMark', { mark: 'app_index_rec_ads' }, res => {
+			if (res.data.code == 1) {
+				let resData = [];
+				res.data.data.data.forEach(item => {
+					item.imageurl = _this.$PIC(item.imageurl);
+					resData.push(item);
+				});
+				_this.recAds = resData;
+			}
+		});
+		//获取并设置APP首页_推荐商品分类
+		_this.$GET_FUN('/api/cate/getCateList', { }, res => {
+			if (res.data.code == 1) {
+				let resData = _this.cateList;
+				let goodKind=_this.goodKind;
+				res.data.data.forEach(item => {
+					resData.push(item);
+					goodKind.push(item.name);
+				});
+				_this.cateList = resData;
+				_this.goodKind = goodKind;
+			}
+		});
+		
+		//获取推荐商品
+		_this.checkKindParent(0);
+	},
+	methods: {
+		//轮播图的滚动事件
+		change(e) {
+			this.current = e.detail.current;
+		},
+		search() {
+			uni.navigateTo({
+				url: '/pages/search/search'
+			});
+		},
+		adChange(e) {
+			this.adCurrent = e.detail.current;
+		},
+
+		//九宫格部分的点击事件
+		gridChange(e) {
+			let { index } = e.detail;
+
+			// uni.showToast({
+			// 	title: `点击第${index + 1}个宫格`,
+			// 	icon: 'none'
+			// });
+		},
+
+		//选择产品分类
+		checkKindParent(idx) {
+			this.curKind = idx;
+			let _this=this;
+			let cate=_this.cateList[idx];
+			let cate_id=cate.id;
+			_this.$GET_FUN('/api/tbk/getGoodsList', {
+				cate_id:cate_id,
+				page:1,
+				limit:10,
+			}, res => {
+				if (res.data.code == 1) {
+					let resData = [];
+					console.log(res.data);
+					res.data.data.list.forEach(item => {
+						resData.push(item);
+					
+					});
+					_this.goodList = resData;
+					
+				}
+			});
+			
+			// // goodList
+			// uni.showToast({
+			// 	title: `点击第${idx + 1}个选项`,
+			// 	icon: 'none'
+			// });
+			
+		},
+
+		demoFun() {
+			var _this = this;
+			_this.$GET_FUN(_this.$BASE_URL + '/api/demo/test1', {}, function(res) {
+				// console.log(res);
+			});
+		}
+	}
+};
+</script>
+
+<style>
+.box01 {
+	background: url(../../static/images/indexBg.png) no-repeat;
+	background-size: 100%;
+	padding: 80rpx 20rpx 0;
+}
+.topBox {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.searchBox {
+	width: 82%;
+	background: #fff;
+	border-radius: 50rpx;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 8rpx 24rpx;
+}
+.searchLeft {
+	display: flex;
+	align-items: center;
+	width: 90%;
+}
+.searchLeft text {
+	font-size: 46rpx;
+	margin-right: 10rpx;
+	color: #a0a2a0;
+}
+.defaultInput {
+	font-size: 28rpx;
+	color: #a0a2a0;
+}
+.searchInput {
+	width: calc(100% - 66rpx);
+}
+.scanEnter {
+	font-size: 40rpx;
+	color: #a0a2a0;
+}
+.newsEnter text {
+	font-size: 56rpx;
+	color: #fff;
+}
+
+.adBox {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin: 10rpx 0 30rpx;
+}
+.adTxts {
+	display: flex;
+	align-items: center;
+}
+.adTxtItem {
+	font-size: 22rpx;
+	color: #fff;
+	margin-right: 10rpx;
+}
+.adImg {
+	width: 150rpx;
+	height: 42rpx;
+}
+.swiper-box {
+	height: 280rpx;
+}
+.swiperImage {
+	width: 710rpx;
+	height: 280rpx;
+}
+
+.box02 {
+}
+.nineBox {
+	padding: 20rpx;
+}
+.kindImage {
+	width: 84rpx;
+	height: 84rpx;
+}
+.kindText {
+	font-size: 24rpx;
+	color: #8e8c8d;
+	margin-top: 6rpx;
+}
+.grid-item-box {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	flex: 1;
+	padding: 10rpx 0;
+}
+.conBox {
+	background: #f7f7f5;
+	padding: 40rpx 20rpx 20rpx;
+}
+.adSwiperBox {
+	margin-bottom: 50rpx;
+}
+.ad3ImgBox {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.adImg01 {
+	width: 348rpx;
+	height: 364rpx;
+}
+.adImgBox {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 364rpx;
+}
+.adImg02 {
+	width: 345rpx;
+	height: 176rpx;
+}
+.ad4ImgBox {
+	display: flex;
+	justify-content: space-between;
+	padding: 30rpx 0 30rpx;
+}
+.adImg03 {
+	width: 166rpx;
+	height: 232rpx;
+}
+
+.goodList {
+	margin-top: 60rpx;
+}
+.goodItem {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 44rpx;
+	background: #fff;
+}
+.goodImg {
+	width: 264rpx;
+	height: 262rpx;
+}
+.goodRight {
+	width: calc(100% - 280rpx);
+	height: 262rpx;
+}
+.goodName {
+	font-size: 28rpx;
+	color: #222;
+	margin-bottom: 20rpx;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	overflow: hidden;
+}
+.hotImg {
+	width: 82rpx;
+	height: 30rpx;
+	margin-right: 6rpx;
+}
+.goodInfoMid,
+.couponBox {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 20rpx;
+}
+.shopInfo {
+	display: flex;
+	align-items: center;
+	font-size: 24rpx;
+	color: #8e8c8d;
+}
+.shopLogo {
+	width: 34rpx;
+	height: 34rpx;
+	margin-right: 4rpx;
+}
+.sales {
+	font-size: 24rpx;
+	color: #8e8c8d;
+}
+.couponLeft {
+	font-size: 24rpx;
+	color: #000;
+	font-weight: bold;
+}
+.couponLeft text {
+	font-size: 32rpx;
+}
+.couponRight {
+	font-size: 24rpx;
+	color: #f02b16;
+	border: 1px solid #f02b16;
+	border-radius: 3px;
+	padding-right: 6rpx;
+}
+.couponRight text {
+	background: #f02b16;
+	color: #fff;
+	padding: 0 4rpx;
+	margin-right: 6rpx;
+}
+.winBox {
+	display: flex;
+	align-items: center;
+}
+.winItem {
+	display: flex;
+	align-items: center;
+	margin-right: 20rpx;
+	font-size: 22rpx;
+	color: #ee240f;
+	padding: 2rpx 4rpx;
+}
+.winLeft {
+	border: 1px solid #ee240f;
+}
+.winRight {
+	background: linear-gradient(to right, #ee240f, #fc614d);
+	color: #fff;
+}
+.winRight text {
+	font-size: 28rpx;
+}
+</style>

@@ -1,0 +1,278 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "清新淘",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/brand/index",
+			"style": {
+				"navigationBarTitleText": "品牌热卖",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/vip/index",
+			"style": {
+				"navigationBarTitleText": "超级会员",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/vip/buyvip",
+			"style": {
+				"navigationBarTitleText": "超级会员下单",
+				"navigationStyle": "custom"
+			}
+		},
+		
+		{
+			"path": "pages/play/index",
+			"style": {
+				"navigationBarTitleText": "吃喝玩乐"
+			}
+		},
+		{
+			"path": "pages/user/index",
+			"style": {
+				"navigationBarTitleText": "我的",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/user/widthdraw",
+			"style": {
+				"navigationBarTitleText": "提现",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/user/invite",
+			"style": {
+				"navigationBarTitleText": "邀请",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/index/proDetails",
+			"style": {
+				"navigationBarTitleText": "商品详情",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
+		},
+		{
+			"path": "pages/login/register",
+			"style": {
+				"navigationBarTitleText": "注册"
+			}
+		}
+	    ,{
+            "path" : "pages/search/search",
+            "style" : {
+				"navigationBarTitleText": "搜索",
+				"navigationStyle": "custom"
+			}
+        },{
+            "path" : "pages/search/searchResult",
+            "style" : {
+				"navigationBarTitleText": "搜索",
+				"navigationStyle": "custom"
+			}
+        }
+        ,{
+            "path" : "pages/zone/zone",
+            "style" : {
+				"navigationBarTitleText": "9.9专区",
+				"navigationStyle": "custom"
+			}
+        },
+		{
+		    "path" : "pages/zone/bigDeal",
+		    "style" : {
+				"navigationBarTitleText": "大牌抢购",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+		    "path" : "pages/zone/jingDong",
+		    "style" : {
+				"navigationBarTitleText": "京东",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+		    "path" : "pages/zone/sign",
+		    "style" : {
+				"navigationBarTitleText": "品牌",
+				"navigationStyle": "custom"
+			}
+		}
+        ,{
+            "path" : "pages/share/share",
+            "style" : {
+				"navigationBarTitleText": "分享宝贝",
+				"navigationStyle": "custom"
+			}
+        }
+        ,{
+            "path" : "pages/user/balance/balance",
+            "style" : {
+				"navigationBarTitleText": "余额明细",
+				"navigationStyle": "custom"
+			}
+        }
+        ,{
+            "path" : "pages/user/balance/balanceDetail",
+            "style" : {
+				"navigationBarTitleText": "记录详情",
+				"navigationStyle": "custom"
+			}
+        }
+        ,{
+            "path" : "pages/user/inform/inform",
+            "style" : {
+				"navigationBarTitleText": "消息中心",
+				"navigationStyle": "custom"
+			}
+        }
+        ,{
+            "path" : "pages/user/problem/problem",
+            "style" : {
+				"navigationBarTitleText": "常见问题",
+				"navigationStyle": "custom"
+			}
+        }
+		,{
+            "path" : "pages/setting/index",
+            "style" : {
+				"navigationBarTitleText": "设置",
+				"navigationStyle": "custom"
+			}
+        }
+        ,{
+            "path" : "pages/setting/setting",
+            "style" : {
+				"navigationBarTitleText": "服务协议",
+				"navigationStyle": "custom"
+			}
+        },{
+            "path" : "pages/setting/feedback",
+            "style" : {
+				"navigationBarTitleText": "意见反馈",
+				"navigationStyle": "custom"
+			}
+        }
+        ,{
+            "path" : "pages/cashback/cashback",
+            "style" : {
+				"navigationBarTitleText": "推荐返利",
+				"navigationStyle": "custom"
+			}
+        },
+		{
+		    "path" : "pages/cashback/index",
+		    "style" : {
+				"navigationBarTitleText": "推荐返利",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+		    "path" : "pages/setting/info",
+		    "style" : {
+				"navigationBarTitleText": "个人资料",
+				"navigationStyle": "custom"
+			}
+		}
+        ,{
+            "path" : "pages/setting/collectmoney/collectmoney",
+            "style" : {
+				"navigationBarTitleText": "添加收款账号",
+				"navigationStyle": "custom"
+			}
+        },
+		{
+		    "path" : "pages/setting/collectmoney/index",
+		    "style" : {
+				"navigationBarTitleText": "提现收款账号",
+				"navigationStyle": "custom"
+			}
+		}
+        ,{
+            "path" : "pages/linkconver/linkconver",
+            "style" : {
+				"navigationBarTitleText": "链接转换",
+				"navigationStyle": "custom"
+			}
+        },
+		{
+		    "path" : "pages/login/perfect",
+		    "style" : {
+				"navigationBarTitleText": "完善注册信息",
+				"navigationStyle": "custom"
+			}
+		}
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "清新淘",
+		"navigationBarBackgroundColor": "#ff092d",
+		"navigationBarTextStyle": "white",
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"color": "#8e8c8d",
+		"selectedColor": "#f84e3a",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"list": [{
+				"pagePath": "pages/index/index",
+				"iconPath": "static/images/tabIcon10.png",
+				"selectedIconPath": "static/images/tabIcon11.png",
+				"text": "首页"
+			},{
+				"pagePath": "pages/linkconver/linkconver",
+				"iconPath": "static/images/tabIcon20.png",
+				"selectedIconPath": "static/images/tabIcon21.png",
+				"text": "链接转换"
+			},{
+				"pagePath": "pages/vip/index",
+				"iconPath": "static/images/tabIcon30.png",
+				"selectedIconPath": "static/images/tabIcon31.png",
+				"text": "超级会员"
+			},
+			// {
+			// 	"pagePath": "pages/play/index",
+			// 	"iconPath": "static/images/tabIcon40.png",
+			// 	"selectedIconPath": "static/images/tabIcon41.png",
+			// 	"text": "吃喝玩乐"
+			// },
+			{
+				"pagePath": "pages/user/index",
+				"iconPath": "static/images/tabIcon50.png",
+				"selectedIconPath": "static/images/tabIcon51.png",
+				"text": "我的"
+			}
+			
+		]
+	
+	},
+	"condition" : { //模式配置，仅开发期间生效
+		"current": 0, //当前激活的模式(list 的索引项)
+		"list": [
+			{
+				"name": "", //模式名称
+				"path": "", //启动页面，必选
+				"query": "" //启动参数，在页面的onLoad函数里面得到
+			}
+		]
+	}
+}
